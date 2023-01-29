@@ -12,7 +12,7 @@ func Client() *client.Client {
 	if err != nil {
 		panic(err)
 	}
-	//defer cli.Close()
+	defer cli.Close()
 	return cli
 }
 
@@ -51,4 +51,21 @@ func TestDocker_IsRunning(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestDocker_GetContainer(t *testing.T) {
+	d := &Docker{
+		ctx:    context.Background(),
+		client: Client(),
+	}
+	container := d.GetContainer(context.Background(), "test", true)
+	t.Log(container)
+}
+
+func TestCreateContainer(t *testing.T) {
+	d := &Docker{
+		ctx:    context.Background(),
+		client: Client(),
+	}
+	d.CreateContainer(context.Background(), "test:test", "test")
 }
